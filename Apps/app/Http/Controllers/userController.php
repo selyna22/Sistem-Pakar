@@ -45,18 +45,42 @@ class userController extends Controller
 
     public function prosesdata(Request $request)
     {
-        $bobot = $request->input('bobot');
+        // Ambil nama makanan dari session
         $datamakanan = $request->session()->get('nama_makanan');
-
+    
+        // Ambil data makanan dari tabel 'datamakanan' berdasarkan nama makanan yang ada di session
         $query_dataMakanan = DB::table('datamakanan')->whereIn('NamaMakanan', $datamakanan)->get();
-
-        $cf_pakar = [];
-        foreach ($query_dataMakanan as $key => $value) {
+    
+        // Ambil nilai bobot dari request
+        $bobot = $request->input('bobot');
+    
+        // Ambil data nilai_user berdasarkan bobot dari request
+        $nilaiUsers = DB::table('nilai_user')->pluck('bobot', 'keterangan');
+    
+        // Hitung CF Combine
+        $cfCombine = [];
+        $cf_old = 0;
+    
+        foreach ($query_dataMakanan as $index => $item) {
+            $nilaiUser = isset($nilaiUsers[$bobot[$index]]) ? $nilaiUsers[$bobot[$index]] : 0;
+            $cfExpert = $item->MB - $item->MD;
+            $cfUser = $nilaiUser * $cfExpert;
             
+            if ($index == 0) {
+                $cf_old = $cfUser;
+            } else {
+                $cf_old = $cf_old + ($cfUser * (1 - $cf_old));
+            }
+    
+            $cfCombine[$index] = $cf_old;
         }
-        // dd($bobot);
-        return view('website.User.Perhitungan', compact('bobot', 'query_dataMakanan'));  
+    
+        // Kirim data ke view
+        return view('website.User.Perhitungan', compact('query_dataMakanan', 'nilaiUsers', 'bobot', 'cfCombine'));
     }
+    
+
+
 
     /**
      * Display a listing of the resource.

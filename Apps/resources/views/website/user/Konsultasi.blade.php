@@ -21,6 +21,7 @@
                                 <form class="user" action="{{ route('konsultasi') }}" method="POST">
                                     @csrf
                                     <div class="form-group">
+                                        <label for="exampleInputUmur">Nama Lengkap</label>
                                         <input type="Nama Lengkap" class="form-control form-control-user"
                                             id="exampleInputNama Lengkap" placeholder="Nama Lengkap" name="nama">
                                     </div>
@@ -56,7 +57,7 @@
                                             <hr>
                                             <form action="{{ route('ceknilai') }}" method="POST">
                                                 @csrf
-                                                <label for="customRange1" class="form-label">Seberapa Sering Mengkonsumsi Makanan tersebut dalam 1 Minggu</label>
+                                                <label for="customRange1" class="form-label">Volume Konsumsi Makanan</label>
                                                 @foreach ($nama_makanan as $key => $item)
                                                     <div class="mb-3">
                                                         <label for="customRange{{ $key }}" class="form-label">{{ $item }}</label>
