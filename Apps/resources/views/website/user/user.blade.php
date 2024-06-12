@@ -48,64 +48,55 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <p class="mb-0">NIK <span class="d-inline d-md-none">: </span></p>
+                                            <p class="mb-0">Nama <span class="d-inline d-md-none">: </span></p>
                                         </div>
                                         <div class="col-sm-9">
-                                            {{-- <p class="text-muted mb-0"><span class="d-none d-md-inline">: </span>{{ $query->Nik }}</p> --}}
+                                            <p class="text-muted mb-0"><span class="d-none d-md-inline">: </span>{{ $query->Nama }}</p>
                                         </div>
                                     </div>
                                     <hr class="border border-secondary border-1 opacity-90">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <p class="mb-0">Nama Ibu <span class="d-inline d-md-none">: </span></p>
+                                            <p class="mb-0">Umur <span class="d-inline d-md-none">: </span></p>
                                         </div>
                                         <div class="col-sm-9">
-                                            {{-- <p class="text-muted mb-0"><span class="d-none d-md-inline">: </span> {{ $query->Nama_ibu }}</p> --}}
+                                            <p class="text-muted mb-0"><span class="d-none d-md-inline">: </span> {{ $query->Umur }}</p>
                                         </div>
                                     </div>
                                     <hr class="border border-secondary border-1 opacity-90">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <p class="mb-0">Alamat Lengkap <span class="d-inline d-md-none">: </span></p>
+                                            <p class="mb-0">Nomor Telp <span class="d-inline d-md-none">: </span></p>
                                         </div>
                                         <div class="col-sm-9">
-                                            {{-- <p class="text-muted mb-0"><span class="d-none d-md-inline">: </span> {{ $query->Alamat }}</p> --}}
+                                            <p class="text-muted mb-0"><span class="d-none d-md-inline">: </span> {{ $query->NoTelp }}</p>
                                         </div>
                                     </div>
                                     <hr class="border border-secondary border-1 opacity-90">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <p class="mb-0">Desa <span class="d-inline d-md-none">: </span></p>
+                                            <p class="mb-0">Alamat <span class="d-inline d-md-none">: </span></p>
                                         </div>
                                         <div class="col-sm-9">
-                                            {{-- <p class="text-muted mb-0"><span class="d-none d-md-inline">: </span> {{ $query->Desa }}</p> --}}
+                                            <p class="text-muted mb-0"><span class="d-none d-md-inline">: </span> {{ $query->Alamat }}</p>
                                         </div>
                                     </div>
                                     <hr class="border border-secondary border-1 opacity-90">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <p class="mb-0">Kecamatan <span class="d-inline d-md-none">: </span></p>
+                                            <p class="mb-0">Email <span class="d-inline d-md-none">: </span></p>
                                         </div>
                                         <div class="col-sm-9">
-                                            {{-- <p class="text-muted mb-0"><span class="d-none d-md-inline">: </span> {{ $query->Kecamatan }}</p> --}}
+                                            <p class="text-muted mb-0"><span class="d-none d-md-inline">: </span> {{ $dataLogin->email }}</p>
                                         </div>
                                     </div>
                                     <hr class="border border-secondary border-1 opacity-90">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <p class="mb-0">Rt / Rw <span class="d-inline d-md-none">: </span></p>
+                                            <p class="mb-0">Role <span class="d-inline d-md-none">: </span></p>
                                         </div>
                                         <div class="col-sm-9">
-                                            {{-- <p class="text-muted mb-0"><span class="d-none d-md-inline">: </span> {{ $query->Rt }} / {{ $query->Rw }}</p> --}}
-                                        </div>
-                                    </div>
-                                    <hr class="border border-secondary border-1 opacity-90">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">Nomor Hp <span class="d-inline d-md-none">: </span></p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            {{-- <p class="text-muted mb-0"><span class="d-none d-md-inline">: </span> {{ $query->No_Hp }}</p> --}}
+                                            <p class="text-muted mb-0"><span class="d-none d-md-inline">: </span> {{ $dataLogin->role }}</p>
                                         </div>
                                     </div>
                                 </div>

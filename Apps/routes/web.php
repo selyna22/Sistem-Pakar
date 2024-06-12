@@ -13,22 +13,20 @@ Route::redirect('/', 'login');
 // Route::view("/login", "login.index");
 // Route::view("/login", "login.login");
 Route::get("/login", [AuthController::class, 'index']);
-Route::post("loginku",  [AuthController::class, 'login'])->name('login');
+Route::post("login",  [AuthController::class, 'Authenticate'])->name('login');
+Route::get("/register", [AuthController::class, 'register_view']);
+Route::post("/register", [AuthController::class, 'register'])->name('register');
+Route::post("login",  [AuthController::class, 'Authenticate'])->name('login');
+Route::get("/Logout", [AuthController::class, 'logout']);
 
-
-Route::view("/register", "login.register");
-
-Route::view("/home", "website.main.index");
-// Route::view("/home", "website.main.content");
-
+Route::middleware(['auth'])->group(function () {
+    Route::get("/user", [userController::class, 'index']);
+});
 
 Route::view("admin", "website.main.admin");
 Route::view("datamakanan", "website.main.datamakanan");
 Route::view("datapenyakit", "website.main.datapenyakit");
-// Route::view("MB", "website.main.MB");
-// Route::view("MD", "website.main.MD");
 
-Route::view("user", "website.main.user");
 
 
 Route::get("konsultasi",  [userController::class, 'Konsultasi'])->name('konsultasi');

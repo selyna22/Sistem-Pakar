@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Data_diri;
 use App\Models\datamakanan;
 use App\Models\nilai_user;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Return_;
 
@@ -47,38 +49,39 @@ class userController extends Controller
     {
         // Ambil nama makanan dari session
         $datamakanan = $request->session()->get('nama_makanan');
-    
+
         // Ambil data makanan dari tabel 'datamakanan' berdasarkan nama makanan yang ada di session
         $query_dataMakanan = DB::table('datamakanan')->whereIn('NamaMakanan', $datamakanan)->get();
-    
+
         // Ambil nilai bobot dari request
         $bobot = $request->input('bobot');
-    
+
         // Ambil data nilai_user berdasarkan bobot dari request
-        $nilaiUsers = DB::table('nilai_user')->pluck('bobot', 'keterangan');
-    
+        $nilaiUsers = [];
+        foreach ($bobot as $key => $value) {
+            $nilaiUsers[$key] = DB::table('nilai_user')->where('Keterangan', 'Like', $bobot[$key])->get();
+        }
+
+
+        $nilai_pakar = [];
+        for ($i = 0; $i < count($query_dataMakanan); $i++) {
+            $data = $query_dataMakanan[$i];
+            $nilai_pakar[$i] = $data->MB - $data->MD;
+        }
+
+        // dd($nilaiUsers);
+
+
         // Hitung CF Combine
         $cfCombine = [];
-        $cf_old = 0;
-    
-        foreach ($query_dataMakanan as $index => $item) {
-            $nilaiUser = isset($nilaiUsers[$bobot[$index]]) ? $nilaiUsers[$bobot[$index]] : 0;
-            $cfExpert = $item->MB - $item->MD;
-            $cfUser = $nilaiUser * $cfExpert;
-            
-            if ($index == 0) {
-                $cf_old = $cfUser;
-            } else {
-                $cf_old = $cf_old + ($cfUser * (1 - $cf_old));
-            }
-    
-            $cfCombine[$index] = $cf_old;
-        }
-    
+        // foreach ($ as $key => $value) {
+        //     # code...
+        // }
+
         // Kirim data ke view
-        return view('website.User.Perhitungan', compact('query_dataMakanan', 'nilaiUsers', 'bobot', 'cfCombine'));
+        return view('website.User.Perhitungan', compact('query_dataMakanan', 'nilaiUsers', 'bobot', 'nilai_pakar', 'cfCombine'));
     }
-    
+
 
 
 
@@ -87,7 +90,10 @@ class userController extends Controller
      */
     public function index()
     {
-        //
+        $dataLogin = Auth::user();
+        $query = Data_diri::where('id', $dataLogin->DataDiri_id)->first();
+        // dd($dataLogin);
+        return view('website.user.user', compact('query', 'dataLogin'));
     }
 
     /**
