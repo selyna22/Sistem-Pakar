@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\userController;
 use Illuminate\Support\Facades\Route;
@@ -21,10 +22,14 @@ Route::get("/Logout", [AuthController::class, 'logout']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get("/user", [userController::class, 'index']);
+    Route::get('/makanan', [AdminController::class, 'makanan']);
 });
 
 Route::view("admin", "website.main.admin");
-Route::view("datamakanan", "website.main.datamakanan");
+// Route::view("datamakanan", "website.admin.datamakanan");
+Route::get('/datamakanan', [AdminController::class, 'index']);
+
+Route::get('/makanan', [AdminController::class, 'index'])->name('makanan.index');
 Route::view("datapenyakit", "website.main.datapenyakit");
 
 
