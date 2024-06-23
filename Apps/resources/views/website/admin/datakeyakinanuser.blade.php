@@ -29,9 +29,9 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Id Penyakit</th>
-                                <th>Kode Penyakit</th>
-                                <th>Nama Penyakit</th>
+                                <th>Id Bobot</th>
+                                <th>Keterangan</th>
+                                <th>Bobot</th>
                             </tr>
                         </thead>
                         <tbody>
