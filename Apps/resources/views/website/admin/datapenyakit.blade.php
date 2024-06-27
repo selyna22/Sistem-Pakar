@@ -32,6 +32,7 @@
                                 <th>Id Penyakit</th>
                                 <th>Kode Penyakit</th>
                                 <th>Nama Penyakit</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,6 +40,11 @@
                                 <td>1</td>
                                 <td>P01</td>
                                 <td>Diabetes</td>
+                                <td>
+                                    <a href="#" class="view" title="View" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
+                                    <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                    <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

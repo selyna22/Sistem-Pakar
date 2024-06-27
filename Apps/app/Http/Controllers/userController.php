@@ -147,7 +147,6 @@ class userController extends Controller
     return view('website.User.Perhitungan', compact('query_dataMakanan', 'nilaiArray', 'hasil', 'cfCombineArray', 'matchedDiseases'));
 }
 
-    
     /**
      * Display a listing of the resource.
      */
