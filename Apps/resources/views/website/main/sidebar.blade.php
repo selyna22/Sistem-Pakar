@@ -103,6 +103,11 @@
                 <span>Data Penyakit</span></a>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('/datapenyakit') }}">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Data Keyakinan</span></a>
+        </li>
         {{-- /////////////////////  --}}
 
         
