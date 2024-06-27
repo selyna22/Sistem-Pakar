@@ -20,6 +20,7 @@
                             <th>Nama Makanan</th>
                             <th>Kandungan</th>
                             <th>Nilai CF</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,6 +31,11 @@
                             <td>{{ $makanan->NamaMakanan }}</td>
                             <td>{{ $makanan->Kandungan }}</td>
                             <td>{{ $makanan->Nilai_CF }}</td>
+                            <td>
+                                <a href="#" class="view" title="View" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
+                                <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
