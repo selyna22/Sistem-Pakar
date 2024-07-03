@@ -7,8 +7,8 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Data Makanan</h6>
             <a href="{{ url('Tambahdata_makanan') }}"><button type="button" class="btn btn-primary">Tambah Data Makanan</button></a>
-            <a href="{{ url('Tambahdata_penyakit') }}"><button type="button" class="btn btn-warning">Tambah Data Penyakit</button></a>
-            <a href="{{ url('Tambahdata_keyakinan') }}"><button type="button" class="btn btn-success">Tambah Data Keyakinan</button></a>
+            {{-- <a href="{{ url('Tambahdata_penyakit') }}"><button type="button" class="btn btn-warning">Tambah Data Penyakit</button></a> --}}
+            {{-- <a href="{{ url('Tambahdata_keyakinan') }}"><button type="button" class="btn btn-success">Tambah Data Keyakinan</button></a> --}}
         </div>
         <div class="card-body">
             <div class="table-responsive">

@@ -34,7 +34,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('/datapenyakit') }}">
+                <a class="nav-link" href="{{ url('/datakeyakinan') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Data Keyakinan</span></a>
             </li>
@@ -56,7 +56,7 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('riwayatpenyakit') }}">
+                <a class="nav-link" href="{{ url('riwayat') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Riwayat Konsultasi</span></a>
             </li>
