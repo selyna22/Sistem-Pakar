@@ -6,6 +6,7 @@ use App\Models\Data_diri;
 use App\Models\datamakanan;
 use App\Models\Penyakit;
 use App\Models\nilai_user;
+use App\Models\riwayat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +21,10 @@ class userController extends Controller
     public function Konsultasi()
     {
         $nama_makanan = [];
+        $kandungan = [];
         $datamakanan = datamakanan::all();
         // dd($datamakanan);
-        return view('website.User.Konsultasi', compact('datamakanan', 'nama_makanan'));
+        return view('website.User.Konsultasi', compact('datamakanan', 'nama_makanan', 'kandungan'));
     }
 
     public function proseskonsultasi(Request $request)
@@ -47,105 +49,144 @@ class userController extends Controller
     }
 
     public function prosesdata(Request $request)
-{
-    // Ambil nama makanan dari session
-    $datamakanan = $request->session()->get('nama_makanan');
+    {
+        // Ambil nama makanan dari session
+        $datamakanan = $request->session()->get('nama_makanan');
 
-    // Ambil data makanan dari tabel 'datamakanan' berdasarkan nama makanan yang ada di session
-    $query_dataMakanan = DB::table('datamakanan')->whereIn('NamaMakanan', $datamakanan)->get();
+        // Ambil data makanan dari tabel 'datamakanan' berdasarkan nama makanan yang ada di session
+        $query_dataMakanan = DB::table('datamakanan')->whereIn('NamaMakanan', $datamakanan)->get();
 
-    // Ambil nilai bobot dari request
-    $bobot = $request->input('bobot');
+        // Ambil nilai bobot dari request
+        $bobot = $request->input('bobot');
 
-    // Iterasi melalui setiap elemen dalam array
-    $nilaiArray = [];
-    foreach ($bobot as $bobot) {
-        switch ($bobot) {
-            case 'Sangat Sering':
-                $nilai = "1.0";
-                break;
+        // Iterasi melalui setiap elemen dalam array
+        $nilaiArray = [];
+        foreach ($bobot as $bobot) {
+            switch ($bobot) {
+                case 'Sangat Sering':
+                    $nilai = "1.0";
+                    break;
 
-            case 'Sering':
-                $nilai = "0.8";
-                break;
+                case 'Sering':
+                    $nilai = "0.8";
+                    break;
 
-            case 'Cukup Sering':
-                $nilai = "0.6";
-                break;
+                case 'Cukup Sering':
+                    $nilai = "0.6";
+                    break;
 
-            case 'Kurang Sering':
-                $nilai = "0.4";
-                break;
+                case 'Kurang Sering':
+                    $nilai = "0.4";
+                    break;
 
-            case 'Tidak Sering':
-                $nilai = "0.2";
-                break;
+                case 'Tidak Sering':
+                    $nilai = "0.2";
+                    break;
 
-            case 'Tidak':
-                $nilai = "0";
-                break;
+                case 'Tidak':
+                    $nilai = "0";
+                    break;
 
-            default:
-                $nilai = null; // Tambahkan default untuk menangani nilai yang tidak dikenali
-                break;
+                default:
+                    $nilai = null; // Tambahkan default untuk menangani nilai yang tidak dikenali
+                    break;
+            }
+
+            // Tambahkan nilai yang dihasilkan ke array nilai
+            $nilaiArray[] = $nilai;
         }
 
-        // Tambahkan nilai yang dihasilkan ke array nilai
-        $nilaiArray[] = $nilai;
-    }
+        $hasil = [];
+        for ($i = 0; $i < count($nilaiArray); $i++) {
+            $hasil[] = $query_dataMakanan[$i]->Nilai_CF * $nilaiArray[$i];
+        }
+        // dd($kumpulanData);
 
-    $hasil = [];
-    for ($i = 0; $i < count($nilaiArray); $i++) {
-        $hasil[] = $query_dataMakanan[$i]->Nilai_CF * $nilaiArray[$i];
-    }
+        // Rules
+        $rules = [
 
-    // Inisialisasi CF Combine dengan nilai hasil pertama
-    $cfCombineArray = [];
-    if (count($hasil) > 1) {
-        $cfCombine = ($hasil[0] + $hasil[1]) * (1 - $hasil[0]);
-        $cfCombineArray[] = $cfCombine;
+            'P01' => ['M05', 'M09', 'M16', 'M23', 'M24', 'M29', 'M30'],
+            'P02' => ['M02', 'M13', 'M14', 'M21'],
+            'P03' => ['M04', 'M10', 'M19', 'M22', 'M32'],
+            'P04' => ['M08', 'M11', 'M12', 'M15', 'M18'],
+            'P05' => ['M01', 'M03', 'M06', 'M07', 'M17', 'M20', 'M25', 'M26', 'M27', 'M28', 'M31'],
+        ];
 
-        // Hitung CF Combine
-        for ($i = 1; $i < count($hasil) - 1; $i++) {
-            $cfCombine = ($cfCombine + $hasil[$i + 1]) * (1 - $cfCombine);
+        $diseaseNames = [
+            'P01' => 'Asam Lambung',
+            'P02' => 'Asan Urat',
+            'P03' => 'Diabetes',
+            'P04' => 'Hipertensi',
+            'P05' => 'Kolesterol'
+        ];
+
+        $kodeMakanan = [];
+        foreach ($query_dataMakanan as $key => $item) {
+            $kodeMakanan[$key] = $item->KodeMakanan;
+        }
+
+        $indexKey = [];
+        foreach ($rules as $key => $value) {
+            foreach ($kodeMakanan as $kode) {
+                if (in_array($kode, $value)) {
+                    $indexKey[] = $key;
+                }
+            }
+        }
+
+        $penyakit = [];
+        foreach ($indexKey as $key) {
+            if (isset($diseaseNames[$key])) {
+                $penyakit[$key] = $diseaseNames[$key];
+            }
+        }
+
+        $banyak_data = $query_dataMakanan->count();
+        $kumpulanData = [];
+        for ($i = 0; $i < $banyak_data; $i++) {
+            $kumpulanData[$i] = [
+                $query_dataMakanan[$i]->KodeMakanan,
+                $query_dataMakanan[$i]->NamaMakanan,
+                $query_dataMakanan[$i]->Nilai_CF,
+                $nilaiArray[$i],
+                $hasil[$i],
+            ];
+        }
+
+
+        dd($indexKey);
+
+
+
+        // Inisialisasi CF Combine dengan nilai hasil pertama
+        $cfCombineArray = [];
+        if (count($hasil) > 1) {
+            $cfCombine = ($hasil[0] + $hasil[1]) * (1 - $hasil[0]);
+            $cfCombineArray[] = $cfCombine;
+
+            // Hitung CF Combine
+            for ($i = 1; $i < count($hasil) - 1; $i++) {
+                $cfCombine = ($cfCombine + $hasil[$i + 1]) * (1 - $cfCombine);
+                $cfCombineArray[] = $cfCombine;
+            }
+        } else {
+            $cfCombine = $hasil[0];
             $cfCombineArray[] = $cfCombine;
         }
-    } else {
-        $cfCombine = $hasil[0];
-        $cfCombineArray[] = $cfCombine;
-    }
 
-    // Rules
-    $rules = [
-        'P01' => ['M05'],
-        'P01' => ['M01','M02'],
-        'P01' => ['M01'],
-        'P02' => ['M01', 'M05', 'M02', 'M13', 'M14', 'M21'],
-        'P03' => ['M04', 'M10', 'M19', 'M32'],
-        'P04' => ['M08', 'M11', 'M12', 'M15', 'M18'],
-        'P05' => ['M01', 'M03', 'M06', 'M07', 'M17', 'M21', 'M25', 'M26', 'M27', 'M28', 'M31']
-    ];
+        $selectedMakananCodes = $query_dataMakanan->pluck('KodeMakanan')->toArray();
+        $matchedDiseases = [];
 
-    $diseaseNames = [
-        'P01' => 'Asam Lambung',
-        'P02' => 'Asan Urat',
-        'P03' => 'Diabetes',
-        'P04' => 'Hipertensi',
-        'P05' => 'Kolesterol'
-    ];
-
-    $selectedMakananCodes = $query_dataMakanan->pluck('KodeMakanan')->toArray();
-    $matchedDiseases = [];
-
-    foreach ($rules as $ruleKey => $ruleConditions) {
-        if (empty(array_diff($ruleConditions, $selectedMakananCodes))) {
-            $matchedDiseases[] = $diseaseNames[$ruleKey];
+        foreach ($rules as $ruleKey => $ruleConditions) {
+            if (empty(array_diff($ruleConditions, $selectedMakananCodes))) {
+                $matchedDiseases[] = $diseaseNames[$ruleKey];
+            }
         }
-    }
 
-    // Kirim data ke view
-    return view('website.User.Perhitungan', compact('query_dataMakanan', 'nilaiArray', 'hasil', 'cfCombineArray', 'matchedDiseases'));
-}
+        // Kirim data ke view, ketiga nilai sementara tidak di butuhkan
+        // 'nilaiArray', 'hasil', 
+        return view('website.User.Perhitungan', compact('query_dataMakanan', 'cfCombineArray', 'matchedDiseases', 'penyakit', 'kumpulanData'));
+    }
 
     /**
      * Display a listing of the resource.
@@ -161,9 +202,11 @@ class userController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function riwayat()
     {
-        //
+        $query = riwayat::all();
+
+        return view('website.user.riwayat', compact('query'));
     }
 
     /**

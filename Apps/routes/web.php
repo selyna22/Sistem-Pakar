@@ -29,7 +29,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/makanan', [AdminController::class, 'index'])->name('makanan.index');
     Route::get('/datapenyakit', [AdminController::class, 'datapenyakit']);
-    // Route::view("datapenyakit", "website.main.datapenyakit");
+    Route::get('/datakeyakinan', [AdminController::class, 'datakeyakinan']);
+
 
 
     Route::get("konsultasi",  [userController::class, 'Konsultasi'])->name('konsultasi');
@@ -41,9 +42,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get("/Tambahdata_makanan", [AdminController::class, 'create_makanan']);
     Route::get("/Tambahdata_penyakit", [AdminController::class, 'create_penyakit']);
     Route::get("/Tambahdata_keyakinan", [AdminController::class, 'create_keyakinan']);
+    
 
     Route::post("/Tambahdata_makanan",  [AdminController::class, 'store_makanan'])->name('Tambahdata_makanan');
     Route::post("/Tambahdata_penyakit",  [AdminController::class, 'store_penyakit'])->name('Tambahdata_penyakit');
     Route::post("/Tambahdata_makanan",  [AdminController::class, 'store_makanan'])->name('Tambahdata_makanan');
+    
+    Route::get("/riwayat", [userController::class, 'riwayat']);
     
 });

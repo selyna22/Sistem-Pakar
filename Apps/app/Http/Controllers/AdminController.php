@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\datamakanan;
+use App\Models\nilai_user;
 use App\Models\Penyakit;
 use GuzzleHttp\Promise\Create;
 
@@ -62,5 +63,11 @@ class AdminController extends Controller
     {
         $query = Penyakit::all();
         return view('website.admin.datapenyakit', compact('query'));
+    }
+
+    public function datakeyakinan()
+    {
+        $query = nilai_user::all();
+        return view('website.admin.datakeyakinanuser', compact('query'));
     }
 }
