@@ -100,7 +100,13 @@ class userController extends Controller
         for ($i = 0; $i < count($nilaiArray); $i++) {
             $hasil[] = $query_dataMakanan[$i]->Nilai_CF * $nilaiArray[$i];
         }
-        // dd($kumpulanData);
+
+        
+        $makananBerpengaruh = [];
+        $banyak = count($hasil);
+        for ($i=0; $i < $banyak ; $i++) { 
+            $makananBerpengaruh[$i] = $datamakanan[$i] . " : " .  $hasil[$i];
+        }
 
         // Rules
         $rules = [
@@ -194,9 +200,19 @@ class userController extends Controller
             'Presentase' => $nilai_presentase
         ]);
 
+        if (($nilai_presentase > 0 ) && ($nilai_presentase <= 25 )) {
+            $kategori = "Lumayan Aman";
+        }elseif (($nilai_presentase > 25 ) && ($nilai_presentase <= 50 )) {
+            $kategori = "Kurang Aman";
+        }elseif (($nilai_presentase > 50 ) && ($nilai_presentase <= 75 )) {
+            $kategori = "Tidak Aman";
+        }else{
+            $kategori = "Sangat Tidak Aman";
+        }
+
         // Kirim data ke view, ketiga nilai sementara tidak di butuhkan
         // 'nilaiArray', 'hasil', 
-        return view('website.User.Perhitungan', compact('query_dataMakanan', 'cfCombineArray', 'matchedDiseases', 'penyakit', 'kumpulanData', 'presentase'));
+        return view('website.User.Perhitungan', compact('query_dataMakanan', 'cfCombineArray', 'matchedDiseases', 'penyakit', 'kumpulanData', 'presentase', 'kategori', 'makananBerpengaruh'));
     }
 
     /**

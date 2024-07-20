@@ -28,6 +28,7 @@
                                                                 adalah: <strong>{{ $item }}</strong></h5>
                                                             <h5>Presentase Keyakinannya: {{ number_format($presentase, 2) }}
                                                                 <strong>%</strong></h5>
+                                                            <h5>Keterangan : {{$kategori}}</h5>
                                                         </div>
                                                     @endforeach
                                                 @else
@@ -38,6 +39,10 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    @foreach ($makananBerpengaruh as $item)
+                                        {{$item}}
+                                    @endforeach
 
                                     <div class="container mt-5">
                                         <div class="card shadow-sm">
