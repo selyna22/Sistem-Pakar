@@ -39,7 +39,7 @@
                                         </div>
                                     </div>
 
-                                    {{-- <div class="container mt-5">
+                                    <div class="container mt-5">
                                         <div class="card shadow-sm">
                                             <div class="card-header bg-primary text-white">
                                                 <h4 class="mb-0">CF Rule</h4>
@@ -108,7 +108,7 @@
                                             </div>
 
                                         </div>
-                                    </div> --}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
