@@ -105,41 +105,20 @@ class userController extends Controller
         // Rules
         $rules = [
 
-            'P01' => ['M05', 'M09', 'M16', 'M23', 'M24', 'M29', 'M30'],
-            'P02' => ['M02', 'M13', 'M14', 'M21'],
+            'P01' => ['M05', 'M09', 'M16', 'M23', 'M24', 'M29', 'M30','M33','M34'],
+            'P02' => ['M02', 'M13', 'M14', 'M21','M37'],
             'P03' => ['M04', 'M10', 'M19', 'M22', 'M32'],
-            'P04' => ['M08', 'M11', 'M12', 'M15', 'M18'],
-            'P05' => ['M01', 'M03', 'M06', 'M07', 'M17', 'M20', 'M25', 'M26', 'M27', 'M28', 'M31'],
+            'P04' => ['M08', 'M11', 'M12', 'M15', 'M18','M35'],
+            'P05' => ['M01', 'M03', 'M06', 'M07', 'M17', 'M20', 'M25', 'M26', 'M27', 'M28', 'M31','M36'],
         ];
 
         $diseaseNames = [
             'P01' => 'Asam Lambung',
-            'P02' => 'Asan Urat',
+            'P02' => 'Asam Urat',
             'P03' => 'Diabetes',
             'P04' => 'Hipertensi',
             'P05' => 'Kolesterol'
         ];
-
-        $kodeMakanan = [];
-        foreach ($query_dataMakanan as $key => $item) {
-            $kodeMakanan[$key] = $item->KodeMakanan;
-        }
-
-        $indexKey = [];
-        foreach ($rules as $key => $value) {
-            foreach ($kodeMakanan as $kode) {
-                if (in_array($kode, $value)) {
-                    $indexKey[] = $key;
-                }
-            }
-        }
-
-        $penyakit = [];
-        foreach ($indexKey as $key) {
-            if (isset($diseaseNames[$key])) {
-                $penyakit[$key] = $diseaseNames[$key];
-            }
-        }
 
         $banyak_data = $query_dataMakanan->count();
         $kumpulanData = [];
@@ -153,10 +132,33 @@ class userController extends Controller
             ];
         }
 
+        // Ambil kolom ke-4 dari setiap sub-array
+        $nilaiKeempat = array_column($kumpulanData, 4);
 
-        dd($indexKey);
+        // Temukan nilai maksimum dan indeksnya
+        $maxValue = max($nilaiKeempat);
+        $maxIndex = array_search($maxValue, $nilaiKeempat);
 
+        // Ambil data lengkap dari array asli berdasarkan indeks
+        $dataTerbesar = $kumpulanData[$maxIndex];
 
+        $searchItem = $dataTerbesar[0];
+        // Inisialisasi variabel untuk menyimpan hasil pencarian
+        $kodePenyakit = null;
+        // Cari aturan yang berisi item tersebut
+        foreach ($rules as $key => $values) {
+            if (in_array($searchItem, $values)) {
+                $kodePenyakit = $key;
+                break;
+            }
+        }
+
+        $penyakit = [];
+        foreach ($diseaseNames as $key => $value) {
+            if ($key == $kodePenyakit) {
+                $penyakit[] = $value;
+            }
+        }
 
         // Inisialisasi CF Combine dengan nilai hasil pertama
         $cfCombineArray = [];
@@ -176,16 +178,25 @@ class userController extends Controller
 
         $selectedMakananCodes = $query_dataMakanan->pluck('KodeMakanan')->toArray();
         $matchedDiseases = [];
-
         foreach ($rules as $ruleKey => $ruleConditions) {
             if (empty(array_diff($ruleConditions, $selectedMakananCodes))) {
                 $matchedDiseases[] = $diseaseNames[$ruleKey];
             }
         }
 
+        $presentase = end($cfCombineArray) * 100;
+
+        $nilai_presentase = number_format($presentase, 2);
+
+        $nilai_penyakit = reset($penyakit);
+        riwayat::create([
+            'Diagnosa' => $nilai_penyakit,
+            'Presentase' => $nilai_presentase
+        ]);
+
         // Kirim data ke view, ketiga nilai sementara tidak di butuhkan
         // 'nilaiArray', 'hasil', 
-        return view('website.User.Perhitungan', compact('query_dataMakanan', 'cfCombineArray', 'matchedDiseases', 'penyakit', 'kumpulanData'));
+        return view('website.User.Perhitungan', compact('query_dataMakanan', 'cfCombineArray', 'matchedDiseases', 'penyakit', 'kumpulanData', 'presentase'));
     }
 
     /**
@@ -244,8 +255,11 @@ class userController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy()
     {
-        //
+        $query = riwayat::all();
+
+        Riwayat::query()->delete();
+        return view('website.user.riwayat', compact('query'));
     }
 }
