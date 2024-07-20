@@ -5,61 +5,6 @@
         <!-- Outer Row -->
         <div class="row justify-content-center">
             <div class="col-xl-10 col-lg-12 col-md-9">
-                {{-- kelas awal konsultasi --}}
-                {{-- <div class="container">
-                    <div class="d-flex justify-content-center">
-                        <div class="card o-hidden border-0 shadow-lg my-5" style="width: 100%;">
-                            <div class="card-body p-0">
-                                <!-- Nested Row within Card Body -->
-                                <div class="row justify-content-center">
-                                    <div class="col-lg-10">
-                                        <div class="p-5">
-                                            <div class="text-center">
-                                                <h1 class="h4 text-gray-900 mb-4">MENU KONSULTASI DIAGNOSA
-                                                    RISIKO PENYAKIT AKIBAT KONSUMSI MAKANAN</h1>
-                                            </div>
-                                            <form class="user" action="{{ route('konsultasi') }}" method="POST">
-                                                @csrf
-                                                <div class="form-group">
-                                                    <label for="exampleInputNama">Nama Lengkap</label>
-                                                    <input type="text" class="form-control form-control-user"
-                                                        id="exampleInputNama" placeholder="Nama Lengkap" name="nama">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputUmur">Umur</label>
-                                                    <input type="number" class="form-control form-control-user"
-                                                        id="exampleInputUmur" placeholder="Umur" name="umur">
-                                                </div>
-                                                <h6>Pilih Makanan yang ingin anda ketahui potensi penyakit</h6>
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        @foreach ($datamakanan as $item)
-                                                            <div class="col-md-4 mb-2">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        value="{{ $item->NamaMakanan }}"
-                                                                        name="nama_makanan[]">
-                                                                    <label class="form-check-label">
-                                                                        {{ $item->NamaMakanan }}
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                </div>
-                                                <button type="submit"
-                                                    class="btn btn-primary btn-user btn-block">Kirim</button>
-                                                <hr>
-                                            </form>
-                                            <hr>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-lg-12">
@@ -67,18 +12,19 @@
                                 <div class="card-body p-0">
                                     <div class="p-5">
                                         <div class="text-center">
-                                            <h1 class="h4 text-gray-900 mb-4">MENU KONSULTASI DIAGNOSA RISIKO PENYAKIT AKIBAT KONSUMSI MAKANAN</h1>
+                                            <h1 class="h4 text-gray-900 mb-4">MENU KONSULTASI DIAGNOSA RISIKO PENYAKIT
+                                                AKIBAT KONSUMSI MAKANAN</h1>
                                         </div>
                                         <form class="user" action="{{ route('konsultasi') }}" method="POST">
                                             @csrf
-                                            <div class="form-group">
+                                            {{-- <div class="form-group">
                                                 <label for="exampleInputNama">Nama Lengkap</label>
                                                 <input type="text" class="form-control form-control-user" id="exampleInputNama" placeholder="Nama Lengkap" name="nama">
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleInputUmur">Umur</label>
                                                 <input type="number" class="form-control form-control-user" id="exampleInputUmur" placeholder="Umur" name="umur">
-                                            </div>
+                                            </div> --}}
                                             <h6>Pilih Makanan yang ingin Anda ketahui potensi penyakitnya</h6>
                                             <div class="form-group">
                                                 <div class="table-responsive">
@@ -92,13 +38,17 @@
                                                         </thead>
                                                         <tbody>
                                                             @foreach ($datamakanan as $item)
-                                                            <tr>
-                                                                <td class="text-center">
-                                                                    <input class="form-check-input" type="checkbox" value="{{ $item->NamaMakanan }}" name="nama_makanan[]">
-                                                                </td>
-                                                                <td>{{ $item->NamaMakanan }}</td>
-                                                                <td>{{ $item->Kandungan }}</td>
-                                                            </tr>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        <input class="form-check-input large-checkbox" type="checkbox"
+                                                                            value="{{ $item->NamaMakanan }}"
+                                                                            name="nama_makanan[]"
+                                                                            style="width: 20px; height: 20px; transform: scale(1.5);">
+                                                                    </input>
+                                                                    </td>
+                                                                    <td>{{ $item->NamaMakanan }}</td>
+                                                                    <td>{{ $item->Kandungan }}</td>
+                                                                </tr>
                                                             @endforeach
                                                         </tbody>
                                                     </table>
@@ -107,14 +57,13 @@
                                             <button type="submit" class="btn btn-primary btn-user btn-block">Kirim</button>
                                             <hr>
                                         </form>
-                                        <hr>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
 
                 {{-- Kelas User --}}
                 @if (isset($bobot))
@@ -127,13 +76,13 @@
                                         <div class="col-lg-10">
                                             <div class="p-5">
                                                 <div class="text-center">
-                                                    <h1 class="h4 text-gray-900 mb-4">KONSULTASI</h1>
+                                                    <h1 class="h4 text-gray-900 mb-4">Volume Konsumsi</h1>
                                                 </div>
                                                 <hr>
                                                 <form action="{{ route('ceknilai') }}" method="POST">
                                                     @csrf
-                                                    <label for="customRange1" class="form-label">Volume Konsumsi
-                                                        Makanan</label>
+                                                    {{-- <label for="customRange1" class="form-label">Volume Konsumsi
+                                                        Makanan</label> --}}
                                                     @foreach ($nama_makanan as $key => $item)
                                                         <div class="mb-3">
                                                             <label for="customRange{{ $key }}"

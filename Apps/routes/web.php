@@ -47,6 +47,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post("/Tambahdata_makanan",  [AdminController::class, 'store_makanan'])->name('Tambahdata_makanan');
     Route::post("/Tambahdata_penyakit",  [AdminController::class, 'store_penyakit'])->name('Tambahdata_penyakit');
     Route::post("/Tambahdata_makanan",  [AdminController::class, 'store_makanan'])->name('Tambahdata_makanan');
+
+    Route::delete('/hapus', [UserController::class, 'destroy'])->name('hapus');
     
     Route::get("/riwayat", [userController::class, 'riwayat']);
     
